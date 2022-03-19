@@ -13,6 +13,12 @@ import pandas as pd
 import requests
 
 
+conn = 'mongodb://localhost:27017'
+client = pymongo.MongoClient(conn)
+
+db = client.mars_db
+collection = db.items
+
 # In[2]:
 
 
@@ -69,6 +75,12 @@ for result in results:
     print(title)
     print(body)
 
+#Dictionary to be inserting to MongoDB
+post = {'title': title,
+        'body': body,
+    }
+# Insert dictionary into MongoDB as a document
+collection.insert_one(post)
 
 # # JPL Mars Space Image
 # * Visit the url for the Featured Space Image page here.
@@ -164,6 +176,10 @@ df.head()
 
 df.to_html()
 
+#Dictionary to be inserting to MongoDB
+mars_facts = {'Mar_Facts': df}
+# Insert dictionary into MongoDB as a document
+collection.insert_one(mars_facts)
 
 # # Mars Hemisphere
 # * Visit the Astrogeology site here to obtain high resolution images for each of Mar's hemispheres.
